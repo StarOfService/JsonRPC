@@ -4,16 +4,17 @@ namespace JsonRPC;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-define ('CURLOPT_URL', 10002);
-define ('CURLOPT_RETURNTRANSFER', 19913);
-define ('CURLOPT_CONNECTTIMEOUT', 78);
-define ('CURLOPT_MAXREDIRS', 68);
-define ('CURLOPT_SSL_VERIFYPEER', 64);
-define ('CURLOPT_POST', 47);
-define ('CURLOPT_POSTFIELDS', 10015);
-define ('CURLOPT_HTTPHEADER', 10023);
-define ('CURLOPT_HEADERFUNCTION', 20079);
-define ('CURLOPT_CAINFO', 10065);
+defined('CURLOPT_URL') || define('CURLOPT_URL', 10002);
+defined('CURLOPT_RETURNTRANSFER') || define('CURLOPT_RETURNTRANSFER', 19913);
+defined('CURLOPT_CONNECTTIMEOUT') || define('CURLOPT_CONNECTTIMEOUT', 78);
+defined('CURLOPT_TIMEOUT') || define('CURLOPT_TIMEOUT', 13);
+defined('CURLOPT_MAXREDIRS') || define('CURLOPT_MAXREDIRS', 68);
+defined('CURLOPT_SSL_VERIFYPEER') || define('CURLOPT_SSL_VERIFYPEER', 64);
+defined('CURLOPT_POST') || define('CURLOPT_POST', 47);
+defined('CURLOPT_POSTFIELDS') || define('CURLOPT_POSTFIELDS', 10015);
+defined('CURLOPT_HTTPHEADER') || define('CURLOPT_HTTPHEADER', 10023);
+defined('CURLOPT_HEADERFUNCTION') || define('CURLOPT_HEADERFUNCTION', 20079);
+defined('CURLOPT_CAINFO') || define('CURLOPT_CAINFO', 10065);
 
 function extension_loaded($extension) {
     return HttpClientTest::$functions->extension_loaded($extension);
@@ -173,6 +174,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
                 CURLOPT_URL => 'url',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
+                CURLOPT_TIMEOUT => 60,
                 CURLOPT_MAXREDIRS => 2,
                 CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_POST => true,

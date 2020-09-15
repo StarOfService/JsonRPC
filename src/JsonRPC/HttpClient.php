@@ -23,11 +23,18 @@ class HttpClient
     protected $url;
 
     /**
-     * HTTP client timeout
+     * HTTP connection timeout
      *
      * @var integer
      */
-    protected $timeout = 5;
+    protected $connectionTimeout = 5;
+
+    /**
+     * Request execution timeout
+     *
+     * @var int
+     */
+    protected $requestTimeout = 60;
 
     /**
      * Default HTTP headers to send to the server
@@ -143,15 +150,41 @@ class HttpClient
     }
 
     /**
-     * Set timeout
+     * Set connection timeout
      *
-     * @param  integer $timeout
+     * @deprecated Use withConnectionTimeout or withRequestTimeout instead
+     * @see withConnectionTimeout
+     * @see withRequestTimeout
+     *
+     * @param int $timeout
      *
      * @return $this
      */
     public function withTimeout($timeout)
     {
-        $this->timeout = $timeout;
+        return $this->withConnectionTimeout($timeout);
+    }
+
+    /**
+     * @param int $timeout
+     *
+     * @return $this
+     */
+    public function withConnectionTimeout($timeout)
+    {
+        $this->connectionTimeout = $timeout;
+
+        return $this;
+    }
+
+    /**
+     * @param int $timeout
+     *
+     * @return $this
+     */
+    public function withRequestTimeout($timeout)
+    {
+        $this->requestTimeout = $timeout;
 
         return $this;
     }
@@ -268,7 +301,8 @@ class HttpClient
             curl_setopt_array($ch, [
                 CURLOPT_URL => trim($this->url),
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_CONNECTTIMEOUT => $this->timeout,
+                CURLOPT_TIMEOUT => $this->requestTimeout,
+                CURLOPT_CONNECTTIMEOUT => $this->connectionTimeout,
                 CURLOPT_MAXREDIRS => 2,
                 CURLOPT_SSL_VERIFYPEER => $this->verifySslCertificate,
                 CURLOPT_POST => true,
@@ -334,7 +368,7 @@ class HttpClient
             'http' => [
                 'method' => 'POST',
                 'protocol_version' => 1.1,
-                'timeout' => $this->timeout,
+                'timeout' => $this->connectionTimeout,
                 'max_redirects' => 2,
                 'header' => implode("\r\n", $headers),
                 'content' => $payload,
